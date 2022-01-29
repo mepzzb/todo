@@ -3,10 +3,12 @@ const express = require('express')
 const mongoose = require('mongoose')
 
 const authRoute = require('./routes/auth')
+const toDosRoute = require('./routes/todos')
 const app = express()
 
 app.use(express.json())
 app.use('/api/auth', authRoute);
+app.use('/api/todos', toDosRoute);
 
 mongoose
   .connect(process.env.MONGO_URI)
