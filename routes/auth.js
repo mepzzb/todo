@@ -27,10 +27,19 @@ router.post('/register', async (req, res) => {
       name: req.body.name
     })
     const savedUser = await newUser.save()
+
+    const payload = { userId: savedUser._id }
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '1d'
+    })
+
     const userToReturn = { ...savedUser._doc }
     delete userToReturn.password;
 
-    return res.json(userToReturn)
+    return res.json({
+      token,
+      user: userToReturn
+    })
   } catch (e) {
     console.log(e)
     res.status(500).send(e.message)
